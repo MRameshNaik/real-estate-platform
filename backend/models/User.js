@@ -13,13 +13,13 @@ const Userschema=new mongoose.Schema({
         type:String,
         required:true
     },
-    Password:{
+    password:{
         type:String,
         required:true
     },
     
 })
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", Userschema);
 
 module.exports = User;
 
