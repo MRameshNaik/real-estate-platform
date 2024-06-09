@@ -12,6 +12,8 @@ mongoDB();
 app.use(express.json());
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+app.use("/api" , require("./controllers/propertyRoutes"))
+app.use("/api" , require("./controllers/propertyImageRoutes"))
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
