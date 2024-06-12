@@ -2,15 +2,19 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const loginRouter = require("express").Router();
 const User = require("../models/User");
-const { response } = require("express");
 
-const SECRET = "bearer"; // This should be in the dotenv file , rn i m keeping it here .
+const SECRET = "bearer"; // kindly put it in the .env file
 
 loginRouter.post("/", async (request, response) => {
   try {
-    const { email, password } = request.body;
+    const { emailOrPhone, password } = request.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: emailOrPhone });
+
+    if (!user) {
+      user = await User.findOne({ ID_name: emailOrPhone });
+    }
+
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.password);
 
