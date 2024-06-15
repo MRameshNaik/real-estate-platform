@@ -13,7 +13,7 @@ usersRouter.post("/", async (request, response) => {
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   const user = new User({
-    ID_name: phoneNumber,
+    phoneNumber: phoneNumber,
     name: name,
     email: email,
     password: passwordHash,
@@ -25,11 +25,11 @@ usersRouter.post("/", async (request, response) => {
 
 usersRouter.put("/:id", async (request, response) => {
   const { id } = request.params;
-  const { ID_name, name, email, password } = request.body;
+  const { phoneNumber, name, email, password } = request.body;
 
   const updateUser = {};
 
-  if (ID_name) updateUser.ID_name = ID_name;
+  if (phoneNumber) updateUser.phoneNumber = phoneNumber;
   if (name) updateUser.name = name;
   if (email) updateUser.email = email;
 

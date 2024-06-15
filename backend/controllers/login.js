@@ -3,16 +3,15 @@ const bcrypt = require("bcrypt");
 const loginRouter = require("express").Router();
 const User = require("../models/User");
 
-const SECRET = "bearer"; // kindly put it in the .env file
+const SECRET = "bearer"; // This should be in the dotenv file, rn I am keeping it here.
 
 loginRouter.post("/", async (request, response) => {
   try {
     const { emailOrPhone, password } = request.body;
 
-    const user = await User.findOne({ email: emailOrPhone });
-
-    if (!user) {
-      user = await User.findOne({ ID_name: emailOrPhone });
+    var user = await User.findOne({ email: emailOrPhone });
+    if (user == null) {
+      user = await User.findOne({ phoneNumber: emailOrPhone });
     }
 
     const passwordCorrect =
@@ -31,15 +30,11 @@ loginRouter.post("/", async (request, response) => {
 
     const token = jwt.sign(userForToken, SECRET);
 
-    response.status(200).json({
-      token,
-      email: user.email,
-      name: user.name,
-      id: user._id,
-    });
+    response
+      .status(200)
+      .send({ token, email: user.email, name: user.name, id: user._id });
   } catch (error) {
-    console.error("Error during login:", error);
-    response.status(500).json({ error: "Internal server error" });
+    response.status(500).json({ error: "Something went wrong" });
   }
 });
 
