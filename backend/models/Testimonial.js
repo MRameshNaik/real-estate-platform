@@ -9,15 +9,9 @@ const testimonialSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  rating: {
-    type: Number,
-    min: 1,
-    max: 5,
+  title:{
+    type: String,
     required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
 });
 

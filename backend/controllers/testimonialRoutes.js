@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     const newTestimonial = new Testimonial({
       author: req.body.author,
       content: req.body.content,
-      rating: req.body.rating,
+      title: req.body.title
     });
     const testimonial = await newTestimonial.save();
     res.json(testimonial);
