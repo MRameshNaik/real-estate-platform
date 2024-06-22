@@ -7,9 +7,9 @@ const Userschema = new mongoose.Schema({
   },
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
-  lastName:{
+  lastName: {
     type: String,
   },
   email: {
@@ -20,10 +20,9 @@ const Userschema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image:{
+  image: {
     type: String,
-    required: true,
-  }
+  },
 });
 const User = mongoose.model("User", Userschema);
 
