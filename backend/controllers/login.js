@@ -25,14 +25,17 @@ loginRouter.post("/", async (request, response) => {
 
     const userForToken = {
       email: user.email,
-      id: user._id,
+      phoneNumber: user.phoneNumber,
+      firstname: user.firstName,
+      lastname: user.lastName,
+      image: user.image
     };
 
     const token = jwt.sign(userForToken, SECRET);
 
     response
       .status(200)
-      .send({ token, email: user.email, name: user.name, id: user._id });
+      .send({ token, id: user._id });
   } catch (error) {
     response.status(500).json({ error: "Something went wrong" });
   }
