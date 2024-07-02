@@ -17,7 +17,7 @@ app.use("/api/login", loginRouter);
 app.use("/api", require("./controllers/propertyRoutes"));
 app.use("/api", require("./controllers/propertyImageRoutes"));
 app.use("/api/testimonials", require("./controllers/testimonialRoutes"));
-
+app.use("/api", require("./controllers/emailVerification"));
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
