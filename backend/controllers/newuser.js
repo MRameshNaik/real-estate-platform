@@ -3,7 +3,9 @@ const usersRouter = require("express").Router();
 const User = require("../models/User");
 
 usersRouter.post("/", async (request, response) => {
-  const { phoneNumber, name, email, password } = request.body;
+
+  const { phoneNumber, firstName, lastName, email, password, image } =
+    request.body;
 
   if (!password) {
     return response.status(400).json({ error: "Password is required" });
@@ -13,25 +15,34 @@ usersRouter.post("/", async (request, response) => {
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   const user = new User({
-    phoneNumber: phoneNumber,
-    name: name,
-    email: email,
+    phoneNumber,
+    firstName,
+    lastName,
+    email,
     password: passwordHash,
+    image,
   });
 
-  const savedUser = await user.save();
-  response.status(201).json(savedUser);
+  try {
+    const savedUser = await user.save();
+    response.status(201).json(savedUser);
+  } catch (error) {
+    response.status(400).json({ error: "Error saving user" });
+  }
 });
 
 usersRouter.put("/:id", async (request, response) => {
   const { id } = request.params;
-  const { phoneNumber, name, email, password } = request.body;
+  const { phoneNumber, firstName, lastName, email, password, image } =
+    request.body;
 
   const updateUser = {};
 
   if (phoneNumber) updateUser.phoneNumber = phoneNumber;
-  if (name) updateUser.name = name;
+  if (firstName) updateUser.firstName = firstName;
+  if (lastName) updateUser.lastName = lastName;
   if (email) updateUser.email = email;
+  if (image) updateUser.image = image;
 
   if (password) {
     const saltRounds = 10;
@@ -68,8 +79,12 @@ usersRouter.delete("/:id", async (request, response) => {
 });
 
 usersRouter.get("/", async (request, response) => {
-  const users = await User.find({});
-  response.json(users);
+  try {
+    const users = await User.find({});
+    response.json(users);
+  } catch (error) {
+    response.status(400).json({ error: "Error fetching users" });
+  }
 });
 
 module.exports = usersRouter;
