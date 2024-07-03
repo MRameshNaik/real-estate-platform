@@ -18,6 +18,8 @@ app.use("/api", require("./controllers/propertyRoutes"));
 app.use("/api", require("./controllers/propertyImageRoutes"));
 app.use("/api/testimonials", require("./controllers/testimonialRoutes"));
 app.use("/api", require("./controllers/emailVerification"));
+app.use("/api", require("./controllers/Appointment"));
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
