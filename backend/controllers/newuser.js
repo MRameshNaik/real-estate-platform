@@ -30,6 +30,10 @@ usersRouter.post("/", async (request, response) => {
   } catch (error) {
     response.status(400).json({ error: "Error saving user" });
   }
+  
+  const OTP = generateOTP();
+  
+  sendOTP(email, OTP);
 });
 
 usersRouter.put("/:id", async (request, response) => {
