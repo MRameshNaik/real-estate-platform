@@ -1,25 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema({
   adminId: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   buyersId: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
-    default: []
+    default: [],
   },
   sellersId: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
-    default: []
-  }
+    default: [],
+  },
 });
 
 const Admin = mongoose.model("Admin", adminSchema);

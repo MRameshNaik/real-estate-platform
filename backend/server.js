@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const usersRouter = require("./controllers/newuser");
 const loginRouter = require("./controllers/login");
+const AdminRouter = require("./controllers/adminlogin");
+const adminsignuprouter = require("./controllers/adminsignup");
+
 const mongoDB = require("./db");
 const cors = require("cors");
 
@@ -14,6 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/admin/login", AdminRouter);
+app.use("/api/admin/signup", adminsignuprouter);
 app.use("/api", require("./controllers/propertyRoutes"));
 app.use("/api", require("./controllers/propertyImageRoutes"));
 app.use("/api/testimonials", require("./controllers/testimonialRoutes"));
