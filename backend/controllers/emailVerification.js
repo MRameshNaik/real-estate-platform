@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require('cors');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const EmailVerify = require("../models/emailVerification");
 const { generateOTP, sendOTP } = require("../util/otp");
 const SECRET_KEY = "123456";
+
 router.post("/generate-otp", async (req, res) => {
   const email = req.body.email;
 

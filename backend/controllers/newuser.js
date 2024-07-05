@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
 const User = require("../models/User");
-const { generateOTP, sendOTP } = require("../util/otp");
+
 
 usersRouter.post("/", async (request, response) => {
 
@@ -31,9 +31,7 @@ usersRouter.post("/", async (request, response) => {
     response.status(400).json({ error: "Error saving user" });
   }
   
-  const OTP = generateOTP();
-  
-  sendOTP(email, OTP);
+
 });
 
 usersRouter.put("/:id", async (request, response) => {
