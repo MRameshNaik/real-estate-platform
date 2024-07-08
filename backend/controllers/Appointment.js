@@ -25,4 +25,15 @@ router.post("/appointments", async(req,res) => {
     }
 });
 
+router.get("/appointments", async(req,res) => {
+    try{
+        const appointments = await Appointments.find();
+        return res.status(200).json({success: true, appointments: appointments});
+    }
+    catch(error){
+        console.log("Failed here while Fetching Booked appointments")
+        return res.status(500).json({ success: false, message: "Internal Server Error" , error: error});
+    }
+});
+
 module.exports = router;
