@@ -1,9 +1,21 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const usersRouter = require("./controllers/newuser");
 const loginRouter = require("./controllers/login");
 const AdminRouter = require("./controllers/adminlogin");
 const adminsignuprouter = require("./controllers/adminsignup");
+const propertyRouter = require("./controllers/propertyRoutes");
+const path = require("path");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Serve static files from the "uploads" directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Use the property router
+app.use("/api", propertyRouter);
 
 const mongoDB = require("./db");
 const cors = require("cors");
