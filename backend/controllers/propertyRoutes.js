@@ -1,12 +1,26 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 
 const Property = require("../models/property");
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Set the destination for the uploaded files
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname); // Set the file name
+  }
+});
+const upload = multer({ storage: storage });
 
 // Create Property
-router.post("/property", async (req, res) => {
+router.post("/property", upload.single('image'), async (req, res) => {
   try {
-    const newProperty = new Property(req.body);
+    const newProperty = new Property({
+      ...req.body,
+      image: req.file.path // Save the path to the uploaded image
+    });
     await newProperty.save();
     res.status(201).json(newProperty);
   } catch (error) {
@@ -56,14 +70,23 @@ router.delete("/property/:property_id", async (req, res) => {
 });
 
 // Update Property
-router.put("/property/:property_id", async (req, res) => {
+router.put("/property/:property_id", upload.single('image'), async (req, res) => {
   const { property_id } = req.params;
   try {
     let property = await Property.findById(property_id);
     if (!property) {
       return res.status(404).json({ error: "Property not found" });
     }
-    property = await Property.findByIdAndUpdate(property_id, req.body, { new: true });
+
+    // Update property fields
+    property.set(req.body);
+
+    // If a new image is uploaded, update the image path
+    if (req.file) {
+      property.image = req.file.path;
+    }
+
+    await property.save();
     res.json(property);
   } catch (error) {
     console.log(error);
