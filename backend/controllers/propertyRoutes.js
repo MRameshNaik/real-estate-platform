@@ -42,6 +42,7 @@ router.get("/property/:property_id", async (req,res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 // Get All Properties
 router.get("/property", async (req, res) => {
   try {
