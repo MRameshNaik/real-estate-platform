@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const usersRouter = require("./controllers/newuser");
 const loginRouter = require("./controllers/login");
 const AdminRouter = require("./controllers/adminlogin");
 const adminsignuprouter = require("./controllers/adminsignup");
+
+
 
 const mongoDB = require("./db");
 const cors = require("cors");
@@ -24,6 +27,7 @@ app.use("/api", require("./controllers/propertyImageRoutes"));
 app.use("/api/testimonials", require("./controllers/testimonialRoutes"));
 app.use("/api", require("./controllers/emailVerification"));
 app.use("/api", require("./controllers/Appointment"));
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
