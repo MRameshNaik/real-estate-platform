@@ -3,9 +3,9 @@ const usersRouter = require("express").Router();
 const User = require("../models/User");
 
 
-usersRouter.post("/", async (request, response) => {
+usersRouter.post("/newuser", async (request, response) => {
 
-  const { phoneNumber, firstName, lastName, email, password, image } =
+  const { phone, firstName, lastName, email, password, image } =
     request.body;
 
   if (!password) {
@@ -16,7 +16,7 @@ usersRouter.post("/", async (request, response) => {
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   const user = new User({
-    phoneNumber,
+    phone,
     firstName,
     lastName,
     email,
@@ -28,7 +28,7 @@ usersRouter.post("/", async (request, response) => {
     const savedUser = await user.save();
     response.status(201).json(savedUser);
   } catch (error) {
-    response.status(400).json({ error: "Error saving user" });
+    response.status(400).json({ error: "Error saving user", details: error.message });
   }
   
 
