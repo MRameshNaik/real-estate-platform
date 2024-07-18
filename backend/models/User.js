@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Userschema = new mongoose.Schema({
-  phoneNumber: {
+  phone: {
     type: String,
     required: true,
   },
