@@ -26,6 +26,20 @@ router.get("/property", async (req, res) => {
   }
 });
 
+router.get("/property/:property_id", async (req,res) => {
+  const { property_id } = req.params;
+  try {
+    let property = await Property.findById(property_id);
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+    return res.json({success: true, property: property});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // Delete Property
 router.delete("/property/:property_id", async (req, res) => {
   const { property_id } = req.params;

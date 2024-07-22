@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const propertySchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    ref: "User"
   },
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -19,6 +18,12 @@ const propertySchema = new mongoose.Schema({
   status: { type: String },
   //purpose:Buy, Rent,PG/Coliving
   purpose: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  mail: {
     type: String,
   },
   amenities: { type: [String], default: [] },

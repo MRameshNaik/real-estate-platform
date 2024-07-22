@@ -1,14 +1,19 @@
-// propertyImageRoutes.js
-
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 
 const PropertyImage = require("../models/propertyImage");
 
+const storage = multer.memoryStorage(); // Use memory storage or configure as needed
+const upload = multer({ storage });
+
 // Create Property Image
-router.post("/property-image", async (req, res) => {
+router.post("/property-image", upload.single("image_url"), async (req, res) => {
   try {
-    const newPropertyImage = new PropertyImage(req.body);
+    const { property_id } = req.body;
+    const image_url = req.file.buffer; // Handle the image buffer
+
+    const newPropertyImage = new PropertyImage({ property_id, image_url });
     await newPropertyImage.save();
     res.status(201).json(newPropertyImage);
   } catch (error) {
