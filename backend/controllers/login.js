@@ -5,15 +5,15 @@ const User = require("../models/User");
 
 const SECRET = "bearer"; // This should be in the dotenv file, rn I am keeping it here.
 
-loginRouter.post("/", async (request, response) => {
+loginRouter.post("/login", async (request, response) => {
   try {
-    const { emailOrPhone, password } = request.body;
+    const { email, password } = request.body;
 
-    var user = await User.findOne({ email: emailOrPhone });
+    var user = await User.findOne({ email: email});
     if (user == null) {
-      user = await User.findOne({ phoneNumber: emailOrPhone });
+      user = await User.findOne({ phoneNumber: email });
     }
-
+    console.log("Received credentials:", email, password);
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.password);
 

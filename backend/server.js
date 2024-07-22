@@ -19,7 +19,7 @@ mongoDB();
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", usersRouter);
-app.use("/api/login", loginRouter);
+app.use("/api/users", loginRouter);
 app.use("/api/admin/login", AdminRouter);
 app.use("/api/admin/signup", adminsignuprouter);
 app.use("/api", require("./controllers/propertyRoutes"));
