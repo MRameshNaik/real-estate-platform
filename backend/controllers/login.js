@@ -7,13 +7,13 @@ const SECRET = "bearer"; // This should be in the dotenv file, rn I am keeping i
 
 loginRouter.post("/login", async (request, response) => {
   try {
-    const { email, password } = request.body;
-
-    var user = await User.findOne({ email: email});
+    const { emailOrPhone, password } = request.body;
+    console.log(request.body);
+    var user = await User.findOne({ email: emailOrPhone });
     if (user == null) {
-      user = await User.findOne({ phoneNumber: email });
+      user = await User.findOne({ phoneNumber: emailOrPhone });
     }
-    console.log("Received credentials:", email, password);
+    console.log("Received credentials:", emailOrPhone, password);
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.password);
 
@@ -28,14 +28,12 @@ loginRouter.post("/login", async (request, response) => {
       phoneNumber: user.phoneNumber,
       firstname: user.firstName,
       lastname: user.lastName,
-      image: user.image
+      image: user.image,
     };
 
     const token = jwt.sign(userForToken, SECRET);
 
-    response
-      .status(200)
-      .send({ token, id: user._id });
+    response.status(200).send({ token, id: user._id });
   } catch (error) {
     response.status(500).json({ error: "Something went wrong" });
   }
