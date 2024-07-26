@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 usersRouter.post("/newuser", async (request, response) => {
 
-  const { phone, firstName, lastName, email, password, image } =
+  const { phone, firstName, lastName, email, password, role, image } =
     request.body;
 
   if (!password) {
@@ -21,6 +21,7 @@ usersRouter.post("/newuser", async (request, response) => {
     lastName,
     email,
     password: passwordHash,
+    role,
     image,
   });
 

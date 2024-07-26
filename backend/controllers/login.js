@@ -27,7 +27,8 @@ loginRouter.post("/login", async (request, response) => {
       email: user.email,
       phoneNumber: user.phoneNumber,
       firstname: user.firstName,
-      lastname: user.lastName
+      lastname: user.lastName,
+      role: user.role || "User",
     };
 
     const token = jwt.sign(userForToken, SECRET);
