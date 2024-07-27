@@ -21,7 +21,7 @@ app.use(express.json());
 app.use("/api/users", usersRouter);
 app.use("/api/users", loginRouter);
 app.use("/api/admin/login", AdminRouter);
-app.use("/api/admin/signup", adminsignuprouter);
+app.use("/api/admin", adminsignuprouter);
 app.use("/api", require("./controllers/propertyRoutes"));
 app.use("/api", require("./controllers/propertyImageRoutes"));
 app.use("/api/testimonials", require("./controllers/testimonialRoutes"));

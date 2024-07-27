@@ -2,29 +2,34 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const adminsignuprouter = new express.Router();
 const Admin = require("../models/Admin");
-// const { authenticate, authorizeAdmin } = require("../middleware/auth");
+const { authenticate, authorizeAdmin } = require("../middleware/auth");
 
-adminsignuprouter.post("/", async (req, res) => {
-  const { adminId, password } = req.body;
+adminsignuprouter.post(
+  "/signup",
+  authenticate,
+  authorizeAdmin,
+  async (req, res) => {
+    const { adminId, password } = req.body;
 
-  if (!adminId || !password) {
-    return res
-      .status(400)
-      .send({ error: "Admin ID and password are required." });
+    if (!adminId || !password) {
+      return res
+        .status(400)
+        .send({ error: "Admin ID and password are required." });
+    }
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    const newAdmin = new Admin({ adminId, password: passwordHash });
+    try {
+      await newAdmin.save();
+      res.status(201).send({ message: "Admin created successfully." });
+    } catch (e) {
+      res.status(400).send({ error: "Failed to create admin." });
+    }
   }
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(password, saltRounds);
+);
 
-  const newAdmin = new Admin({ adminId, password: passwordHash });
-  try {
-    await newAdmin.save();
-    res.status(201).send({ message: "Admin created successfully." });
-  } catch (e) {
-    res.status(400).send({ error: "Failed to create admin." });
-  }
-});
-
-adminsignuprouter.get("/", async (req, res) => {
+adminsignuprouter.get("/", authenticate, authorizeAdmin, async (req, res) => {
   try {
     const admins = await Admin.find({});
     res.json(admins);
@@ -33,19 +38,24 @@ adminsignuprouter.get("/", async (req, res) => {
   }
 });
 
-adminsignuprouter.delete("/:id", async (request, response) => {
-  const { id } = request.params;
+adminsignuprouter.delete(
+  "/:id",
+  authenticate,
+  authorizeAdmin,
+  async (request, response) => {
+    const { id } = request.params;
 
-  try {
-    const deletedUser = await Admin.findByIdAndDelete(id);
-    if (deletedUser) {
-      response.status(204).end();
-    } else {
-      response.status(404).json({ error: "User not found" });
+    try {
+      const deletedUser = await Admin.findByIdAndDelete(id);
+      if (deletedUser) {
+        response.status(204).end();
+      } else {
+        response.status(404).json({ error: "User not found" });
+      }
+    } catch (error) {
+      response.status(400).json({ error: "Invalid user ID" });
     }
-  } catch (error) {
-    response.status(400).json({ error: "Invalid user ID" });
   }
-});
+);
 
 module.exports = adminsignuprouter;

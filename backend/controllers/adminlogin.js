@@ -25,13 +25,13 @@ AdminRouter.post("/", async (request, response) => {
     }
 
     const userForToken = {
-      id: user.adminId,
-      password: user.passwordCorrect,
+      id: user._id,
+      adminId: user.adminId,
     };
 
     const token = jwt.sign(userForToken, SECRET);
 
-    response.status(200).send({ token, id: user.adminId });
+    response.status(200).send({ token, adminId: user.adminId });
   } catch (error) {
     response.status(500).json({ error: "Something went wrong" });
   }
